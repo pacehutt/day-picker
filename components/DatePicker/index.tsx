@@ -45,6 +45,7 @@ const DatePicker: React.FC<DatePickerProps> = ({
         setRepeat={setRepeat}
         customRecurrence={customRecurrence}
         setCustomRecurrence={setCustomRecurrence}
+        setEndDate={setEndDate}
       />
       <Picker
         startDate={startDate}

@@ -16,6 +16,7 @@ interface RecurrenceOptionsProps {
     every: number;
     type: FrequencyTypes;
   }) => void;
+  setEndDate: (date: Date | null) => void;
 }
 
 const RecurrenceOptions: React.FC<RecurrenceOptionsProps> = ({
@@ -25,10 +26,14 @@ const RecurrenceOptions: React.FC<RecurrenceOptionsProps> = ({
   setRepeat,
   customRecurrence,
   setCustomRecurrence,
+  setEndDate,
 }) => {
   const patterns = Object.values(RecurrenceTypes);
 
   const handleRepeatChange = (value: string) => {
+    if (value === RepeatTypes.ENDLESS) {
+      setEndDate(null);
+    }
     setRepeat(value as RepeatTypes);
   };
 
