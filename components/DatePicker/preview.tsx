@@ -48,6 +48,13 @@ const PreviewCalender: React.FC<PreviewCalenderProps> = ({
       return [];
     }
 
+    console.log("generating custom dates inside enddate", endDate, currentDate);
+
+    if (endDate && isAfter(currentDate, endDate)) {
+      console.log("end date reached");
+      return [];
+    }
+
     const { every, type } = customRecurrence;
     const dates: Date[] = [];
     let lastDate = currentDate;
@@ -66,7 +73,11 @@ const PreviewCalender: React.FC<PreviewCalenderProps> = ({
     // Process different recurrence types
     if (type === FrequencyTypes.DAY) {
       // Generate daily dates
-      while (isBefore(lastDate, lastOfMonth)) {
+      while (
+        isBefore(lastDate, lastOfMonth) &&
+        endDate &&
+        isBefore(lastDate, endDate)
+      ) {
         dates.push(new Date(lastDate));
         lastDate = addDays(lastDate, every);
       }
@@ -81,7 +92,11 @@ const PreviewCalender: React.FC<PreviewCalenderProps> = ({
       }
 
       // Generate weekly dates
-      while (isBefore(lastDate, lastOfMonth)) {
+      while (
+        isBefore(lastDate, lastOfMonth) &&
+        endDate &&
+        isBefore(lastDate, endDate)
+      ) {
         dates.push(new Date(lastDate));
         lastDate = addWeeks(lastDate, every);
 
@@ -97,12 +112,14 @@ const PreviewCalender: React.FC<PreviewCalenderProps> = ({
       } else {
         const lastSelectedDate = selectedDates[selectedDates.length - 1];
         let nextDate = lastSelectedDate;
-        if (type === FrequencyTypes.MONTH) {
-          nextDate = addMonths(lastSelectedDate, every);
-        } else {
-          nextDate = addYears(lastSelectedDate, every);
+        nextDate =
+          type === FrequencyTypes.MONTH
+            ? addMonths(lastSelectedDate, every)
+            : addYears(lastSelectedDate, every);
+
+        if (endDate && isBefore(nextDate, endDate)) {
+          dates.push(new Date(nextDate));
         }
-        dates.push(new Date(nextDate));
       }
     }
 

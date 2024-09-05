@@ -22,6 +22,7 @@ const Picker: React.FC<PickerProps> = ({
       <div className="flex gap-4 justify-center items-center">
         <label>Start Date</label>
         <input
+          data-testid="start-date"
           type="date"
           value={format(startDate, "yyyy-MM-dd")}
           onChange={(e) => setStartDate(new Date(e.target.value))}
@@ -32,6 +33,7 @@ const Picker: React.FC<PickerProps> = ({
         <div className="flex gap-4 justify-center items-center">
           <label>End Date</label>
           <input
+            data-testid="end-date"
             type="date"
             value={endDate ? format(endDate, "yyyy-MM-dd") : ""}
             onChange={(e) => setEndDate(new Date(e.target.value))}
